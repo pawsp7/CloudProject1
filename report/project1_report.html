@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CPSY-300 Project 1 — Cloud-Native Nutritional Insights</title>
+<style>
+  @page {
+    size: letter;
+    margin: 16mm 12mm 14mm 12mm;
+    @top-left {
+      content: "CPSY-300 Project 1";
+      font-family: "Liberation Sans", sans-serif;
+      font-size: 9pt;
+      color: #16324f;
+    }
+    @top-right {
+      content: "Report date and time: Tuesday, October 6, 2026, 9:55:55 PM UTC";
+      font-family: "Liberation Sans", sans-serif;
+      font-size: 9pt;
+      color: #16324f;
+    }
+    @bottom-left {
+      content: "Date and time: page header, and the clock inside each screenshot";
+      font-family: "Liberation Sans", sans-serif;
+      font-size: 8pt;
+      color: #16324f;
+    }
+    @bottom-right {
+      content: "Page " counter(page);
+      font-family: "Liberation Sans", sans-serif;
+      font-size: 8pt;
+      color: #16324f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Liberation Sans", "DejaVu Sans", sans-serif;
+    font-size: 11pt;
+    line-height: 1.35;
+    color: #1c2430;
+  }
+  body { padding: 0; }
+  h1 {
+    font-size: 18pt;
+    line-height: 1.2;
+    margin: 0 0 4px;
+    color: #1f4e79;
+  }
+  h2 {
+    font-size: 14pt;
+    margin: 16px 0 6px;
+    color: #1f4e79;
+    border-bottom: 1px solid #c5d4e4;
+    padding-bottom: 2px;
+    break-after: avoid;
+  }
+  h3 { font-size: 12pt; margin: 12px 0 4px; break-after: avoid; }
+  p { margin: 0 0 8px; }
+  .meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    background: #eef4ea;
+    border: 1px solid #8eaa78;
+    padding: 8px 12px;
+    margin: 8px 0 12px;
+  }
+  .meta .label { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.04em; color: #3d5c32; }
+  .meta .value { font-weight: 700; }
+  figure {
+    margin: 8px 0 12px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  figure img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #c5ced6;
+  }
+  figcaption {
+    font-size: 9pt;
+    color: #334;
+    margin-top: 3px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 10px;
+    font-size: 10pt;
+  }
+  th, td { border: 1px solid #c5ced6; padding: 3px 6px; text-align: left; }
+  th { background: #e7eef6; }
+  td.num, th.num { text-align: right; }
+  ul { margin: 4px 0 8px 18px; padding: 0; }
+  li { margin-bottom: 3px; }
+  section.enhance {
+    break-before: page;
+    page-break-before: always;
+  }
+  section.enhance h2 { margin-top: 0; }
+  .charts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+<h1>Cloud-Native Nutritional Insights Application</h1>
+<p>Project report for the local simulation of analysis, containers, Azurite storage, and a GitHub Actions pipeline. Materials are the scripts, logs, and screenshots already in the CloudProject1 repository. No Azure subscription was used.</p>
+
+<div class="meta">
+  <div><div class="label">Report date and time</div><div class="value">Tuesday, October 6, 2026, 9:55:55 PM UTC</div></div>
+  <div><div class="label">Repository</div><div class="value">github.com/pawsp7/CloudProject1</div></div>
+  <div><div class="label">Dataset</div><div class="value">All_Diets.csv — 7,806 recipes, five diet types</div></div>
+  <div><div class="label">Prepared from</div><div class="value">Tasks 1–5 artifacts in this repository</div></div>
+</div>
+
+<h2>Task 1 — Dataset analysis</h2>
+<p><code>data_analysis.py</code> loads <code>All_Diets.csv</code>, fills missing protein, carbs, and fat with each column’s mean, and reports averages by <code>Diet_type</code>, the highest-protein diet and recipe, the top five protein recipes per diet, the most common cuisine, and the protein-to-carbs and carbs-to-fat ratios. Charts are a grouped bar chart, a heatmap, and a scatter plot of the top protein recipes.</p>
+<p>Keto has the highest average protein (101.27 g) and the lowest average carbs (57.97 g). Vegan is the opposite pattern: 56.16 g protein and 254.00 g carbs. Thirty-eight recipes have 0 g fat, so those carbs-to-fat ratios are left blank.</p>
+<table>
+  <thead>
+    <tr><th>Diet type</th><th class="num">Protein (g)</th><th class="num">Carbs (g)</th><th class="num">Fat (g)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>keto</td><td class="num">101.27</td><td class="num">57.97</td><td class="num">153.12</td></tr>
+    <tr><td>mediterranean</td><td class="num">101.11</td><td class="num">152.91</td><td class="num">101.42</td></tr>
+    <tr><td>paleo</td><td class="num">88.67</td><td class="num">129.55</td><td class="num">135.67</td></tr>
+    <tr><td>dash</td><td class="num">69.28</td><td class="num">160.54</td><td class="num">101.15</td></tr>
+    <tr><td>vegan</td><td class="num">56.16</td><td class="num">254.00</td><td class="num">103.30</td></tr>
+  </tbody>
+</table>
+<figure>
+  <img src="../screenshots/01_task1_analysis.png" alt="Terminal output of data_analysis.py with the desktop clock visible">
+  <figcaption>Figure 1. Task 1 terminal output, including ratios and “saved figures.” Date and time visible: panel clock Oct 4, 21:09, and the shell line Sun Oct 04 2026 09:09:23 PM EDT.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/avg_macros_bar.png" alt="Bar chart of average macronutrients by diet type">
+  <figcaption>Figure 2. Average protein, carbs, and fat by diet type.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/macros_heatmap.png" alt="Heatmap of macronutrients by diet type">
+  <figcaption>Figure 3. Heatmap of the same averages.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/top_protein_scatter.png" alt="Scatter plot of top protein recipes by cuisine">
+  <figcaption>Figure 4. Top five protein recipes per diet, plotted by cuisine.</figcaption>
+</figure>
+
+<h2>Task 2 — Docker image and local deployment</h2>
+<p>The application is packaged with a Dockerfile based on <code>python:3.9-slim</code>. The image was built as <code>diet-analysis</code>, run locally, pushed to a registry on <code>localhost:5001</code>, and started again with Docker Compose. The Compose service name in the log is <code>diet-analysis-1</code>, and the container exited 0 after printing the same analysis.</p>
+<figure>
+  <img src="../screenshots/02_task2_build.png" alt="Docker build log ending in a successful image tag">
+  <figcaption>Figure 5. Local image build. Date and time visible on the panel clock (Oct 4, 21:10) and in the shell footer.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/03_task2_run.png" alt="Docker run output of the diet analysis container">
+  <figcaption>Figure 6. <code>docker run</code> of the analysis container, showing the same diet averages as Task 1.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/04_task2_push.png" alt="Docker push to the local registry on port 5001">
+  <figcaption>Figure 7. Push to <code>localhost:5001/diet-analysis</code>. Date and time visible: Sun Oct 04 2026 09:10:23 PM EDT through 09:10:30 PM EDT. The log records digest <code>sha256:d0319f11bb3fa…</code>.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/05_task2_compose.png" alt="Docker Compose run of the diet analysis service">
+  <figcaption>Figure 8. Compose deployment. The service prints the analysis and exits 0. Shell time: Sun Oct 04 2026 09:10:38 PM EDT.</figcaption>
+</figure>
+
+<h2>Task 3 — Azurite and the simulated function</h2>
+<p>Azurite stands in for Azure Blob Storage on <code>127.0.0.1:10000</code> with the published development account. <code>upload_to_azurite.py</code> creates the <code>datasets</code> container and uploads <code>All_Diets.csv</code>. <code>lambda_function.py</code> downloads that blob, averages protein, carbs, and fat by diet, and writes <code>simulated_nosql/results.json</code>. Azurite does not emit blob triggers, so the function is started explicitly. That JSON file is the simulated NoSQL store.</p>
+<figure>
+  <img src="../screenshots/06_task3_azurite_upload.png" alt="Azurite upload of All_Diets.csv">
+  <figcaption>Figure 9. Blob upload into the local Azurite <code>datasets</code> container. Date and time are on the desktop clock and in the terminal <code>date</code> line.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/07_task3_function_run.png" alt="Serverless function invocation">
+  <figcaption>Figure 10. Function invocation. The terminal shows Mon Oct 5 08:37:05 MDT 2026 and the line “Data processed and stored successfully.”</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/08_task3_nosql_results.png" alt="JSON results file for the five diet types">
+  <figcaption>Figure 11. <code>simulated_nosql/results.json</code> after the run. Date and time visible: Mon Oct 5 08:38:20 MDT 2026. The file timestamp in the listing is Oct 5 08:36.</figcaption>
+</figure>
+
+<h2>Task 4 — GitHub Actions pipeline</h2>
+<p><code>.github/workflows/deploy.yml</code> runs on every push. It installs <code>requirements.txt</code>, runs <code>pytest</code>, builds the image, starts a registry on port 5001, pushes <code>localhost:5001/diet-analysis:latest</code>, runs that image, then starts Azurite and invokes <code>lambda_function.py</code>. Nothing is published to Docker Hub or Azure.</p>
+<p>Run <a href="https://github.com/pawsp7/CloudProject1/actions/runs/37516803629">37516803629</a> finished successfully. The job started 2026-10-06T19:09:21Z and completed 2026-10-06T19:11:09Z. Pytest reported 5 passed in 2.49 s. The container printed 7,806 rows and “Deployment finished Tue Oct 6 19:10:31 UTC 2026.” The function again stored the five diet documents. A second run, 37519194382, also succeeded. The timestamped log is <code>task4_run_log.txt</code>. The container stdout is <code>task4_deploy_output.txt</code>.</p>
+<figure>
+  <img src="../screenshots/09_task4_actions_summary.png" alt="GitHub Actions run summary showing success">
+  <figcaption>Figure 12. <code>gh run view</code> for the successful workflow. Date and time visible: Tue Oct 6 07:23:00 PM UTC 2026 on the terminal, panel clock Tue Oct 06 7:23 PM, and job times 2026-10-06T19:09:21Z to 2026-10-06T19:11:09Z.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/10_task4_actions_tests.png" alt="Actions log showing five pytest passes">
+  <figcaption>Figure 13. Actions log for the Python checks. Timestamps 2026-10-06T19:09:42Z through 19:09:46Z, ending in “5 passed in 2.49s.” Panel clock 7:24 PM.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/11_task4_actions_deploy.png" alt="Actions log of the image push and container output">
+  <figcaption>Figure 14. Push to the local registry and container output. Digest <code>sha256:5632e9efc0cd…</code>, keto 101.27 g protein, and “Deployment finished Tue Oct 6 19:10:31 UTC 2026.” Panel clock 7:25 PM.</figcaption>
+</figure>
+<figure>
+  <img src="../screenshots/12_task4_actions_serverless.png" alt="Actions log of Azurite upload and the function result">
+  <figcaption>Figure 15. Azurite upload and function result inside the same job. “Uploaded All_Diets.csv” at 19:11:04Z and “Data processed and stored successfully.” at 19:11:05Z. Panel clock 7:26 PM.</figcaption>
+</figure>
+
+<section class="enhance">
+  <h2>Task 5 — Enhancement report (one page)</h2>
+  <p><strong>Which two options.</strong> The improvements were applied to work already in the repository. Option 1 is a multi-stage Docker build for the Task 2 image that the Task 4 workflow builds. Option 3 is a narrower read in the Task 3 function, so the aggregation parses only the columns it uses.</p>
+  <p><strong>Research.</strong> Docker’s multi-stage build guide separates a builder stage from a runtime stage. The published image then contains the files the process needs, and a later edit to the script does not have to reinstall dependencies that were copied from the builder. Pandas <code>read_csv</code> accepts <code>usecols</code>. Columns that are not listed are not parsed. <code>All_Diets.csv</code> has eight columns and 7,806 rows. <code>lambda_function.py</code> only averages <code>Diet_type</code>, <code>Protein(g)</code>, <code>Carbs(g)</code>, and <code>Fat(g)</code>. <code>Recipe_name</code> and <code>Cuisine_type</code> are text and hold most of the frame’s memory. The analysis script still reads every column, because the charts and cuisine counts need them.</p>
+  <p><strong>What was applied.</strong> <code>Dockerfile</code> now installs pandas, matplotlib, and seaborn in a builder stage, including the existing local-wheels fallback. The runtime stage copies that install prefix plus <code>data_analysis.py</code> and <code>All_Diets.csv</code> only. <code>lambda_function.py</code> passes <code>usecols</code> when it reads the Azurite blob. <code>tests/test_serverless.py</code> checks that those four columns produce the same diet means as a full read, rounded to six decimal places.</p>
+  <p><strong>Impact.</strong> Eight timed passes on this machine, after a warmup read, took 0.0088 s for a full read and average and 0.0058 s for the narrow read, about 34 percent less time. The in-memory frame fell from 2.62 MB to 0.62 MB. The means matched. The runtime image no longer includes screenshots, the assignment brief, or the tests. Installing the scientific packages stays in the builder stage, so a one-line change to the analysis script does not repeat that install. The file is small, so the time saved on one run is a fraction of a second. The same cut is what reduces memory and CPU when an extract is wider, which is the usual cost on a cloud job.</p>
+</section>
+</body>
+</html>
