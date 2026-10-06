@@ -1,0 +1,93 @@
+=== Simulated deployment Tue Oct  6 19:10:18 UTC 2026 ===
+Source image: diet-analysis:local
+Registry image: localhost:5001/diet-analysis:latest
+=== Push to local registry ===
+The push refers to repository [localhost:5001/diet-analysis]
+82e8ef8655b9: Preparing
+12b80b23529c: Preparing
+c87217e21816: Preparing
+c8f6b54339a8: Preparing
+298992e09a03: Preparing
+4f237755fbae: Preparing
+d7c97cb6f1fe: Preparing
+4f237755fbae: Waiting
+d7c97cb6f1fe: Waiting
+c8f6b54339a8: Pushed
+c87217e21816: Pushed
+12b80b23529c: Pushed
+4f237755fbae: Pushed
+298992e09a03: Pushed
+d7c97cb6f1fe: Pushed
+82e8ef8655b9: Pushed
+latest: digest: sha256:5632e9efc0cd594b4c6075bcf52f9441df8abcbd044deb5e9070956931111959 size: 1787
+=== Running container ===
+rows 7806
+missing before fill
+Protein(g)    0
+Carbs(g)      0
+Fat(g)        0
+missing after fill
+Protein(g)    0
+Carbs(g)      0
+Fat(g)        0
+
+average macros by diet
+               Protein(g)  Carbs(g)  Fat(g)
+Diet_type                                  
+keto               101.27     57.97  153.12
+mediterranean      101.11    152.91  101.42
+paleo               88.67    129.55  135.67
+dash                69.28    160.54  101.15
+vegan               56.16    254.00  103.30
+
+highest average protein diet: keto 101.27 g
+single highest protein recipe: Swiss Paleo’s Homemade Italian & Chorizo Sausage | paleo | 1273.61 g
+
+top 5 protein recipes per diet
+    Diet_type                                                          Recipe_name     Cuisine_type  Protein(g)
+        paleo                     Swiss Paleo’s Homemade Italian & Chorizo Sausage          italian     1273.61
+         dash                                                        Salmon Mousse           nordic     1239.47
+         dash                                        Homemade Turkey Alphabet Soup         american     1190.35
+        paleo                                                          Turkey Soup         american     1142.58
+         keto                             Sara Louise's Keto Smoked Holiday Turkey         american     1092.00
+         dash                                                Barbecue Chicken Legs    mediterranean     1017.25
+mediterranean                           Fava Bean Salad with Mountain Ham and Mint         american      970.31
+         dash                                                   12th Man Hot Wings         american      807.03
+         keto                       Mayo Free Deviled Eggs (Paleo, Whole30 + Keto)          italian      766.99
+         keto     Low Carb Beef and Cheddar Cauliflower Bake, THM S meal, Keto too          british      710.81
+        paleo             Orange and Five-Spice Roasted Chicken Legs | Keto, Paleo    mediterranean      677.22
+         keto             Orange and Five-Spice Roasted Chicken Legs | Keto, Paleo    mediterranean      677.22
+         keto                             Low Carb Salmon Cakes (Keto, Grain Free)           nordic      656.95
+mediterranean               Poached Salt Cod with Vegetables and Garlic Mayonnaise    mediterranean      656.65
+mediterranean                                                  Mediterranean Pizza          italian      628.29
+mediterranean Orange and Cumin Leg of Lamb with Roasted Tomatoes and Garlic Recipe    mediterranean      607.03
+        paleo                         Vietnamese Pho Pressure Cooker (Noodle Soup) south east asian      602.91
+mediterranean                                          Meatballs Braised with Kale    mediterranean      531.48
+         dash                                          Jazzed Up Turkey Tetrazzini         american      517.47
+        paleo        Paleo Slow Cooker Honey Garlic Chicken and Vegetables recipes    mediterranean      501.65
+        vegan                                                Tangy Teriyaki Salmon           nordic      431.10
+        vegan                                 Mini nut roasts with candied carrots         american      421.72
+        vegan                                               Vegan Pinto Bean Chili         american      381.55
+        vegan                                  Vegan Chili and Cornbread Casserole         american      319.54
+        vegan                                                Kentucky fried seitan    mediterranean      317.43
+
+most common cuisine per diet
+dash american 639
+keto american 663
+mediterranean mediterranean 1274
+paleo american 535
+vegan american 925
+
+ratios, carbs/fat left blank where fat is 0: 38
+       Protein_to_Carbs_ratio  Carbs_to_Fat_ratio
+count                 7806.00             7768.00
+mean                     1.93               13.74
+std                      7.39              158.04
+min                      0.00                0.00
+25%                      0.21                0.46
+50%                      0.42                1.28
+75%                      1.45                3.15
+max                    427.18             8117.56
+
+saved figures
+=== Deployment finished Tue Oct  6 19:10:31 UTC 2026 ===

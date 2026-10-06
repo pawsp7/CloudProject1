@@ -18,6 +18,17 @@ Workflow file: `.github/workflows/deploy.yml`
 
 Logs and JSON are uploaded as the `simulated-deployment` artifact.
 
+Successful run: https://github.com/pawsp7/CloudProject1/actions/runs/37516803629
+(job started 2026-10-06T19:09:21Z, finished 2026-10-06T19:11:09Z, conclusion success).
+Timestamped excerpts are in `task4_run_log.txt`. Container stdout is in `task4_deploy_output.txt`.
+
+Screenshots (desktop clock plus Actions timestamps):
+
+- `screenshots/09_task4_actions_summary.png`
+- `screenshots/10_task4_actions_tests.png`
+- `screenshots/11_task4_actions_deploy.png`
+- `screenshots/12_task4_actions_serverless.png`
+
 ### Why this stays local
 
 Azurite replaces Azure Blob Storage. A throwaway registry container replaces Docker Hub. The Python function is still started explicitly, because Azurite does not emit blob triggers. GitHub Actions only supplies the runner that executes those local tools.
