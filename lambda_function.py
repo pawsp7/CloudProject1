@@ -23,6 +23,12 @@ CONTAINER_NAME = "datasets"
 BLOB_NAME = "All_Diets.csv"
 OUTPUT_DIR = "simulated_nosql"
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "results.json")
+MACROS = ["Protein(g)", "Carbs(g)", "Fat(g)"]
+
+
+def average_macros(df):
+    """Mean protein, carbs, and fat grouped by Diet_type."""
+    return df.groupby("Diet_type")[MACROS].mean()
 
 
 def process_nutritional_data_from_azurite():
@@ -37,7 +43,7 @@ def process_nutritional_data_from_azurite():
     df = pd.read_csv(io.BytesIO(stream))
 
     # Group by diet type and compute mean of the three macro columns
-    avg_macros = df.groupby("Diet_type")[["Protein(g)", "Carbs(g)", "Fat(g)"]].mean()
+    avg_macros = average_macros(df)
 
     # Persist as JSON records (simulates writing to a NoSQL store)
     result = avg_macros.reset_index().to_dict(orient="records")
