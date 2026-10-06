@@ -1,0 +1,90 @@
+name: Simulated deploy
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-test-deploy:
+    name: Build, test, push, and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Python checks
+        run: |
+          python -m compileall -q data_analysis.py lambda_function.py upload_to_azurite.py
+          pytest -q
+
+      - name: Build Docker image
+        run: docker build -t diet-analysis:local .
+
+      - name: Start local Docker registry
+        run: |
+          docker run -d --name local-registry -p 5001:5000 registry:2
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:5001/v2/ >/dev/null; then
+              echo "Local registry is ready on localhost:5001"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Local registry did not become ready"
+          docker logs local-registry
+          exit 1
+
+      - name: Push image and run simulated deployment
+        run: |
+          set -o pipefail
+          chmod +x scripts/simulate_deploy.sh
+          scripts/simulate_deploy.sh | tee deploy-output.txt
+          test -s deploy-output.txt
+          grep -q "highest average protein diet" deploy-output.txt
+
+      - name: Start Azurite blob emulator
+        run: |
+          docker run -d --name azurite -p 10000:10000 mcr.microsoft.com/azure-storage/azurite \
+            azurite -l /data \
+            --blobHost 0.0.0.0 --blobPort 10000 \
+            --queueHost 0.0.0.0 --queuePort 10001 \
+            --tableHost 0.0.0.0 --tablePort 10002 \
+            --skipApiVersionCheck
+          for attempt in $(seq 1 30); do
+            if python upload_to_azurite.py; then
+              echo "Uploaded All_Diets.csv to Azurite"
+              exit 0
+            fi
+            echo "Waiting for Azurite (attempt ${attempt})"
+            sleep 2
+          done
+          docker logs azurite
+          exit 1
+
+      - name: Invoke simulated serverless function
+        run: |
+          set -o pipefail
+          python lambda_function.py | tee serverless-output.txt
+          python -m json.tool simulated_nosql/results.json
+          grep -q "Data processed and stored successfully." serverless-output.txt
+
+      - name: Upload deployment evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulated-deployment
+          path: |
+            deploy-output.txt
+            serverless-output.txt
+            simulated_nosql/results.json
+          if-no-files-found: error

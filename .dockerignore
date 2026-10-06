@@ -1,0 +1,13 @@
+.git
+.github
+.venv
+venv
+__pycache__
+.pytest_cache
+.azurite-data
+figures
+screenshots
+*.md
+*.html
+*.png
+task3_run_log.txt
