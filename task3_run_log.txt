@@ -1,0 +1,83 @@
+CPSY-300 Project 1 Task 3 — Run Log
+====================================
+Log generated: Mon Oct  5 08:36:10 MDT 2026
+
+1) Azurite start
+   Method: npm install -g azurite (Docker not available on this box)
+   Command:
+   azurite --blobHost 127.0.0.1 --blobPort 10000 --queueHost 127.0.0.1 --queuePort 10001 --tableHost 127.0.0.1 --tablePort 10002 --location /workspace/cloud-project1/.azurite-data --skipApiVersionCheck
+   Time: Mon Oct  5 08:36:10 MDT 2026
+   Status: Blob http://127.0.0.1:10000 listening
+LISTEN 0      511        127.0.0.1:10002      0.0.0.0:*    users:(("node",pid=834897,fd=26))           
+LISTEN 0      511        127.0.0.1:10000      0.0.0.0:*    users:(("node",pid=834897,fd=24))           
+LISTEN 0      511        127.0.0.1:10001      0.0.0.0:*    users:(("node",pid=834897,fd=25))           
+box       834877  0.0  0.0   4716  3804 ?        Ss   08:35   0:00 /usr/bin/bash -O extglob -c snap=$(command cat <&3) && builtin shopt -s extglob && builtin eval -- "$snap" && { builtin set +u 2>/dev/null || true; builtin eval "${__CURSOR_SANDBOX_ENV_RESTORE:-}" 2>/dev/null; builtin eval "${__CURSOR_SANDBOX_TEMP_RESTORE:-}" 2>/dev/null; builtin export PWD="$(builtin pwd)"; builtin shopt -s expand_aliases 2>/dev/null; builtin eval "$1"; }; COMMAND_EXIT_CODE=$?; dump_bash_state >&4; builtin exit $COMMAND_EXIT_CODE -- export PATH="$HOME/.local/bin:$PATH" echo "=== Restarting Azurite with --skipApiVersionCheck ===" >> /workspace/cloud-project1/task3_run_log.txt date >> /workspace/cloud-project1/task3_run_log.txt azurite --blobHost 127.0.0.1 --blobPort 10000 --queueHost 127.0.0.1 --queuePort 10001 --tableHost 127.0.0.1 --tablePort 10002 --location /workspace/cloud-project1/.azurite-data --debug /workspace/cloud-project1/.azurite-data/debug.log --skipApiVersionCheck 
+box       834897  7.3  0.8 11850484 131612 ?     Sl   08:35   0:02 node /home/box/.local/bin/azurite --blobHost 127.0.0.1 --blobPort 10000 --queueHost 127.0.0.1 --queuePort 10001 --tableHost 127.0.0.1 --tablePort 10002 --location /workspace/cloud-project1/.azurite-data --debug /workspace/cloud-project1/.azurite-data/debug.log --skipApiVersionCheck
+box       835317  0.0  0.0   4720  3868 ?        Ss   08:36   0:00 /usr/bin/bash -O extglob -c snap=$(command cat <&3) && builtin shopt -s extglob && builtin eval -- "$snap" && { builtin set +u 2>/dev/null || true; builtin eval "${__CURSOR_SANDBOX_ENV_RESTORE:-}" 2>/dev/null; builtin eval "${__CURSOR_SANDBOX_TEMP_RESTORE:-}" 2>/dev/null; builtin export PWD="$(builtin pwd)"; builtin shopt -s expand_aliases 2>/dev/null; builtin eval "$1"; }; COMMAND_EXIT_CODE=$?; dump_bash_state >&4; builtin exit $COMMAND_EXIT_CODE -- # Rewrite a clean, screenshot-friendly run log while Azurite still runs cd /workspace/cloud-project1 {   echo "CPSY-300 Project 1 Task 3 — Run Log"   echo "===================================="   echo -n "Log generated: "; date   echo ""   echo "1) Azurite start"   echo "   Method: npm install -g azurite (Docker not available on this box)"   echo "   Command:"   echo "   azurite --blobHost 127.0.0.1 --blobPort 10000 --queueHost 127.0.0.1 --queuePort 10001 --tableHost 127.0.0.1 --tablePort 10002 --location /workspace/cloud-project1/.azurite-data --skipApiVersionCheck"   echo -n "   Time: "; date   echo "   Status: Blob http://127.0.0.1:10000 listening"   ss -tlnp 2>/dev/null | grep -E '1000[012]' || true   ps aux | grep '[a]zurite' | head -3   echo ""   echo "2) Python deps"   echo "   python3 -m venv .venv && .venv/bin/pip install -r requirements-task3.txt"   echo "   Installed: azure-storage-blob, pandas (+ deps)"   echo ""   echo "3) Upload"   echo -n "   Time: "; date   .venv/bin/python upload_to_azurite.py   echo ""   echo "4) Function invoke"   echo -n "   Time: "; date   .venv/bin/python lambda_function.py   echo ""   echo "5) Head of simulated_nosql/results.json"   echo -n "   Time: "; date   ls -la simulated_nosql/results.json   head -40 simulated_nosql/results.json   echo ""   echo "6) Summary averages"   .venv/bin/python -c " import json with open('simulated_nosql/results.json') as f:     data=json.load(f) for r in data:     print(f\"  {r['Diet_type']}: Protein={r['Protein(g)']:.2f}, Carbs={r['Carbs(g)']:.2f}, Fat={r['Fat(g)']:.2f}\") "   echo ""   echo -n "End of log: "; date } > task3_run_log.txt  # Confirm azurite still up echo "---" ps aux | grep '[a]zurite' | head -2 cat task3_run_log.txt 
+
+2) Python deps
+   python3 -m venv .venv && .venv/bin/pip install -r requirements-task3.txt
+   Installed: azure-storage-blob, pandas (+ deps)
+
+3) Upload
+   Time: Mon Oct  5 08:36:10 MDT 2026
+Container 'datasets' already exists (or create skipped): The specified container already exists.
+RequestId:1edb299e-53eb-4195-bf03-a49aed70cdbd
+Time:2026-10-05T14:36:10.694Z
+ErrorCode:ContainerAlreadyExists
+Content: <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Error>
+  <Code>ContainerAlreadyExists</Code>
+  <Message>The specified container already exists.
+RequestId:1edb299e-53eb-4195-bf03-a49aed70cdbd
+Time:2026-10-05T14:36:10.694Z</Message>
+</Error>
+Uploaded 'All_Diets.csv' to container 'datasets'.
+
+4) Function invoke
+   Time: Mon Oct  5 08:36:10 MDT 2026
+Data processed and stored successfully.
+
+5) Head of simulated_nosql/results.json
+   Time: Mon Oct  5 08:36:11 MDT 2026
+-rw-r--r-- 1 box box 712 Oct  5 08:36 simulated_nosql/results.json
+[
+  {
+    "Diet_type": "dash",
+    "Protein(g)": 69.28227507163324,
+    "Carbs(g)": 160.5357535816619,
+    "Fat(g)": 101.15056160458454
+  },
+  {
+    "Diet_type": "keto",
+    "Protein(g)": 101.26650793650794,
+    "Carbs(g)": 57.970575396825396,
+    "Fat(g)": 153.1163558201058
+  },
+  {
+    "Diet_type": "mediterranean",
+    "Protein(g)": 101.11231602966345,
+    "Carbs(g)": 152.9055447803765,
+    "Fat(g)": 101.41613804905874
+  },
+  {
+    "Diet_type": "paleo",
+    "Protein(g)": 88.67476452119308,
+    "Carbs(g)": 129.55212715855572,
+    "Fat(g)": 135.66902668759812
+  },
+  {
+    "Diet_type": "vegan",
+    "Protein(g)": 56.15703022339028,
+    "Carbs(g)": 254.00419185282524,
+    "Fat(g)": 103.29967805519053
+  }
+]
+6) Summary averages
+  dash: Protein=69.28, Carbs=160.54, Fat=101.15
+  keto: Protein=101.27, Carbs=57.97, Fat=153.12
+  mediterranean: Protein=101.11, Carbs=152.91, Fat=101.42
+  paleo: Protein=88.67, Carbs=129.55, Fat=135.67
+  vegan: Protein=56.16, Carbs=254.00, Fat=103.30
+
+End of log: Mon Oct  5 08:36:11 MDT 2026
