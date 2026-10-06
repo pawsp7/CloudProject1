@@ -1,0 +1,153 @@
+CPSY-300 Project 1 Task 4 — GitHub Actions run log
+====================================================
+Source: gh run view --log (GitHub Actions)
+Repository: https://github.com/pawsp7/CloudProject1
+Run: https://github.com/pawsp7/CloudProject1/actions/runs/37516803629
+Job: https://github.com/pawsp7/CloudProject1/actions/runs/37516803629/job/112451716893
+Workflow: .github/workflows/deploy.yml
+Event: push
+Branch: cursor/cicd-pipeline-70e7
+Commit: eb851c8715369b783bc5f195497afc38d893df20
+Conclusion: success
+Job started:  2026-10-06T19:09:21Z
+Job finished: 2026-10-06T19:11:09Z
+
+Step timeline (from the Actions job API)
+-----------------------------------------
+19:09:22Z  Set up job                              success
+19:09:23Z  Check out repository                    success
+19:09:26Z  Set up Python                           success
+19:09:26Z  Install Python dependencies             success
+19:09:42Z  Run Python checks                       success
+19:09:46Z  Build Docker image                      success
+19:10:16Z  Start local Docker registry             success
+19:10:18Z  Push image and run simulated deployment success
+19:10:31Z  Start Azurite blob emulator             success
+19:11:04Z  Invoke simulated serverless function    success
+19:11:05Z  Upload deployment evidence              success
+19:11:06Z  Complete job                            success
+
+1) Python checks
+
+2026-10-06T19:09:42.8888405Z ##[group]Run python -m compileall -q data_analysis.py lambda_function.py upload_to_azurite.py
+2026-10-06T19:09:42.8889287Z python -m compileall -q data_analysis.py lambda_function.py upload_to_azurite.py
+2026-10-06T19:09:42.8889824Z pytest -q
+2026-10-06T19:09:42.8945358Z ##[endgroup]
+2026-10-06T19:09:46.2004609Z .....                                                                    [100%]
+2026-10-06T19:09:46.2025583Z 5 passed in 2.49s
+
+
+2) Docker image build
+---------------------
+2026-10-06T19:10:14.9385589Z #10 exporting to image
+2026-10-06T19:10:16.2295990Z #10 writing image sha256:24c69d5fc39ab82d4a371ff193cca4c900a5d57faf67b506c8e4a5a2f9f01c1d done
+2026-10-06T19:10:16.2297114Z #10 naming to docker.io/library/diet-analysis:local done
+2026-10-06T19:10:16.2298466Z #10 DONE 1.4s
+
+
+3) Local registry (localhost:5001)
+----------------------------------
+2026-10-06T19:10:16.2384006Z ##[group]Run docker run -d --name local-registry -p 5001:5000 registry:2
+2026-10-06T19:10:16.2385059Z docker run -d --name local-registry -p 5001:5000 registry:2
+2026-10-06T19:10:16.2386448Z     echo "Local registry is ready on localhost:5001"
+2026-10-06T19:10:17.8299511Z Status: Downloaded newer image for registry:2
+2026-10-06T19:10:18.0409330Z Local registry is ready on localhost:5001
+
+
+4) Push and simulated container deployment
+------------------------------------------
+2026-10-06T19:10:18.0463724Z grep -q "highest average protein diet" deploy-output.txt
+2026-10-06T19:10:18.0669015Z === Simulated deployment Tue Oct  6 19:10:18 UTC 2026 ===
+2026-10-06T19:10:18.0670431Z Source image: diet-analysis:local
+2026-10-06T19:10:18.0671352Z Registry image: localhost:5001/diet-analysis:latest
+2026-10-06T19:10:18.0838636Z === Push to local registry ===
+2026-10-06T19:10:29.7282604Z latest: digest: sha256:5632e9efc0cd594b4c6075bcf52f9441df8abcbd044deb5e9070956931111959 size: 1787
+2026-10-06T19:10:29.7305552Z === Running container ===
+2026-10-06T19:10:31.3097906Z rows 7806
+2026-10-06T19:10:31.3115828Z missing before fill
+2026-10-06T19:10:31.3122821Z missing after fill
+2026-10-06T19:10:31.3124794Z average macros by diet
+2026-10-06T19:10:31.3125772Z Diet_type
+2026-10-06T19:10:31.3126374Z keto               101.27     57.97  153.12
+2026-10-06T19:10:31.3126849Z mediterranean      101.11    152.91  101.42
+2026-10-06T19:10:31.3127375Z paleo               88.67    129.55  135.67
+2026-10-06T19:10:31.3127881Z dash                69.28    160.54  101.15
+2026-10-06T19:10:31.3128416Z vegan               56.16    254.00  103.30
+2026-10-06T19:10:31.3129014Z highest average protein diet: keto 101.27 g
+2026-10-06T19:10:31.3130501Z single highest protein recipe: Swiss Paleo’s Homemade Italian & Chorizo Sausage | paleo | 1273.61 g
+2026-10-06T19:10:31.3131955Z     Diet_type                                                          Recipe_name     Cuisine_type  Protein(g)
+2026-10-06T19:10:31.3132994Z         paleo                     Swiss Paleo’s Homemade Italian & Chorizo Sausage          italian     1273.61
+2026-10-06T19:10:31.3134392Z          dash                                                        Salmon Mousse           nordic     1239.47
+2026-10-06T19:10:31.3135315Z          dash                                        Homemade Turkey Alphabet Soup         american     1190.35
+2026-10-06T19:10:31.3136110Z         paleo                                                          Turkey Soup         american     1142.58
+2026-10-06T19:10:31.3136916Z          keto                             Sara Louise's Keto Smoked Holiday Turkey         american     1092.00
+2026-10-06T19:10:31.3137731Z          dash                                                Barbecue Chicken Legs    mediterranean     1017.25
+2026-10-06T19:10:31.3138907Z mediterranean                           Fava Bean Salad with Mountain Ham and Mint         american      970.31
+2026-10-06T19:10:31.3140169Z          dash                                                   12th Man Hot Wings         american      807.03
+2026-10-06T19:10:31.3141356Z          keto                       Mayo Free Deviled Eggs (Paleo, Whole30 + Keto)          italian      766.99
+2026-10-06T19:10:31.3144276Z         paleo             Orange and Five-Spice Roasted Chicken Legs | Keto, Paleo    mediterranean      677.22
+2026-10-06T19:10:31.3145794Z          keto             Orange and Five-Spice Roasted Chicken Legs | Keto, Paleo    mediterranean      677.22
+2026-10-06T19:10:31.3147406Z          keto                             Low Carb Salmon Cakes (Keto, Grain Free)           nordic      656.95
+2026-10-06T19:10:31.3148861Z mediterranean               Poached Salt Cod with Vegetables and Garlic Mayonnaise    mediterranean      656.65
+2026-10-06T19:10:31.3150246Z mediterranean                                                  Mediterranean Pizza          italian      628.29
+2026-10-06T19:10:31.3151642Z mediterranean Orange and Cumin Leg of Lamb with Roasted Tomatoes and Garlic Recipe    mediterranean      607.03
+2026-10-06T19:10:31.3153126Z         paleo                         Vietnamese Pho Pressure Cooker (Noodle Soup) south east asian      602.91
+2026-10-06T19:10:31.3154629Z mediterranean                                          Meatballs Braised with Kale    mediterranean      531.48
+2026-10-06T19:10:31.3156103Z          dash                                          Jazzed Up Turkey Tetrazzini         american      517.47
+2026-10-06T19:10:31.3157455Z         paleo        Paleo Slow Cooker Honey Garlic Chicken and Vegetables recipes    mediterranean      501.65
+2026-10-06T19:10:31.3158765Z         vegan                                                Tangy Teriyaki Salmon           nordic      431.10
+2026-10-06T19:10:31.3159988Z         vegan                                 Mini nut roasts with candied carrots         american      421.72
+2026-10-06T19:10:31.3161186Z         vegan                                               Vegan Pinto Bean Chili         american      381.55
+2026-10-06T19:10:31.3162339Z         vegan                                  Vegan Chili and Cornbread Casserole         american      319.54
+2026-10-06T19:10:31.3163538Z         vegan                                                Kentucky fried seitan    mediterranean      317.43
+2026-10-06T19:10:31.3173411Z saved figures
+2026-10-06T19:10:31.5742121Z === Deployment finished Tue Oct  6 19:10:31 UTC 2026 ===
+
+
+5) Azurite upload
+-----------------
+2026-10-06T19:10:31.5810776Z   azurite -l /data \
+2026-10-06T19:10:31.5813118Z   --skipApiVersionCheck
+2026-10-06T19:10:31.5815210Z     echo "Uploaded All_Diets.csv to Azurite"
+2026-10-06T19:11:04.6867531Z Created container 'datasets'.
+2026-10-06T19:11:04.6868668Z Uploaded 'All_Diets.csv' to container 'datasets'.
+2026-10-06T19:11:04.7317097Z Uploaded All_Diets.csv to Azurite
+
+
+6) Simulated serverless function
+--------------------------------
+2026-10-06T19:11:05.2132513Z Data processed and stored successfully.
+2026-10-06T19:11:05.4058225Z [
+2026-10-06T19:11:05.4059343Z     {
+2026-10-06T19:11:05.4060018Z         "Diet_type": "dash",
+2026-10-06T19:11:05.4060970Z         "Protein(g)": 69.28227507163324,
+2026-10-06T19:11:05.4061748Z         "Carbs(g)": 160.5357535816619,
+2026-10-06T19:11:05.4062615Z         "Fat(g)": 101.15056160458454
+2026-10-06T19:11:05.4063289Z     },
+2026-10-06T19:11:05.4063980Z     {
+2026-10-06T19:11:05.4064935Z         "Diet_type": "keto",
+2026-10-06T19:11:05.4065756Z         "Protein(g)": 101.26650793650794,
+2026-10-06T19:11:05.4066430Z         "Carbs(g)": 57.970575396825396,
+2026-10-06T19:11:05.4067221Z         "Fat(g)": 153.1163558201058
+2026-10-06T19:11:05.4069385Z     },
+2026-10-06T19:11:05.4069803Z     {
+2026-10-06T19:11:05.4070272Z         "Diet_type": "mediterranean",
+2026-10-06T19:11:05.4070823Z         "Protein(g)": 101.11231602966345,
+2026-10-06T19:11:05.4071344Z         "Carbs(g)": 152.9055447803765,
+2026-10-06T19:11:05.4071836Z         "Fat(g)": 101.41613804905874
+2026-10-06T19:11:05.4072327Z     },
+2026-10-06T19:11:05.4072800Z     {
+2026-10-06T19:11:05.4073156Z         "Diet_type": "paleo",
+2026-10-06T19:11:05.4073581Z         "Protein(g)": 88.67476452119308,
+2026-10-06T19:11:05.4074033Z         "Carbs(g)": 129.55212715855572,
+2026-10-06T19:11:05.4074686Z         "Fat(g)": 135.66902668759812
+2026-10-06T19:11:05.4075137Z     },
+2026-10-06T19:11:05.4075490Z     {
+2026-10-06T19:11:05.4075822Z         "Diet_type": "vegan",
+2026-10-06T19:11:05.4076223Z         "Protein(g)": 56.15703022339028,
+2026-10-06T19:11:05.4076661Z         "Carbs(g)": 254.00419185282524,
+2026-10-06T19:11:05.4077130Z         "Fat(g)": 103.29967805519053
+2026-10-06T19:11:05.4077593Z     }
+2026-10-06T19:11:05.4077926Z ]
+
+End of log. Run conclusion: success.
