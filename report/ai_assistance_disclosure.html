@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI assistance disclosure — CPSY-300 Project 1</title>
+<style>
+  @page {
+    size: letter;
+    margin: 18mm 16mm 16mm 16mm;
+    @top-left {
+      content: "CPSY-300 Project 1";
+      font-family: "Liberation Sans", sans-serif;
+      font-size: 9pt;
+      color: #16324f;
+    }
+    @top-right {
+      content: "Wednesday, October 7, 2026, 1:35 AM UTC";
+      font-family: "Liberation Sans", sans-serif;
+      font-size: 9pt;
+      color: #16324f;
+    }
+    @bottom-left {
+      content: "AI assistance disclosure — separate from the project report";
+      font-family: "Liberation Sans", sans-serif;
+      font-size: 8pt;
+      color: #16324f;
+    }
+    @bottom-right {
+      content: "Page " counter(page);
+      font-family: "Liberation Sans", sans-serif;
+      font-size: 8pt;
+      color: #16324f;
+    }
+  }
+  body {
+    margin: 0;
+    font-family: "Liberation Sans", "DejaVu Sans", sans-serif;
+    font-size: 11.5pt;
+    line-height: 1.4;
+    color: #1c2430;
+  }
+  h1 {
+    font-size: 18pt;
+    line-height: 1.2;
+    margin: 0 0 4px;
+    color: #1f4e79;
+  }
+  p { margin: 0 0 10px; }
+  h2 {
+    font-size: 12.5pt;
+    margin: 14px 0 4px;
+    color: #1f4e79;
+  }
+  ul { margin: 4px 0 10px 18px; padding: 0; }
+  li { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<h1>AI assistance disclosure</h1>
+<p>Cloud-Native Nutritional Insights Application. This page is separate from <code>Project1_Report.pdf</code>.</p>
+<p>An AI coding assistant in Cursor was used for a limited part of the submission. It drafted code and assembled the report from material already in the repository. It was not used for the dataset or for the original analysis, container, and Azurite runs.</p>
+
+<h2>Where it helped</h2>
+<ul>
+  <li>Task 4: the GitHub Actions workflow, the pytest checks, and the local deploy script.</li>
+  <li>Task 5: the multi-stage <code>Dockerfile</code> and the four-column read in <code>lambda_function.py</code>.</li>
+  <li>The project PDF: layout of screenshots and logs that were already in the repository.</li>
+</ul>
+
+<h2>Where it did not</h2>
+<ul>
+  <li><code>All_Diets.csv</code>, <code>data_analysis.py</code>, and the Task 1 charts.</li>
+  <li>The Task 2 build, run, push, and Compose screenshots.</li>
+  <li>The Task 3 Azurite upload, function run, and <code>simulated_nosql/results.json</code>.</li>
+</ul>
+
+<p>Generated code was kept only after the project tests passed and GitHub Actions run 37538803719 completed the build, push, and simulated deployment. The timing figures in the enhancement section were measured on <code>All_Diets.csv</code>, not estimated by the assistant.</p>
+</body>
+</html>
