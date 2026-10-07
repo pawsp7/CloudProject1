@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hailey — CI/CD voiceover slides</title>
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    font-family: "Liberation Sans", "DejaVu Sans", sans-serif;
+    color: #1c2430;
+  }
+  section.slide {
+    width: 13.333in;
+    height: 7.5in;
+    padding: 0.34in 0.48in 0.28in;
+    page-break-after: always;
+    break-after: page;
+    position: relative;
+    overflow: hidden;
+    background: #f7f9fb;
+  }
+  section.slide:last-child { page-break-after: auto; }
+  .kicker {
+    font-size: 14pt;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #1f4e79;
+    margin: 0 0 0.04in;
+  }
+  h1 {
+    font-size: 32pt;
+    line-height: 1.05;
+    margin: 0 0 0.12in;
+    color: #16324f;
+  }
+  .say {
+    font-size: 22pt;
+    line-height: 1.28;
+    margin: 0.08in 0 0.22in;
+    max-width: 12in;
+  }
+  img.shot {
+    display: block;
+    width: 12.35in;
+    height: auto;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #c5d4e4;
+  }
+  .steps { margin: 0.15in 0 0; padding: 0; list-style: none; }
+  .steps li {
+    font-size: 26pt;
+    line-height: 1.35;
+    margin: 0 0 0.14in;
+  }
+  .num {
+    display: inline-block;
+    width: 0.52in;
+    color: #1f4e79;
+    font-weight: 700;
+  }
+  .foot {
+    position: absolute;
+    left: 0.48in;
+    right: 0.48in;
+    bottom: 0.18in;
+    font-size: 13pt;
+    color: #3d5166;
+  }
+  .result {
+    margin: 0.14in 0 0;
+    background: #eef4ea;
+    border: 1px solid #8eaa78;
+    color: #24501f;
+    font-size: 20pt;
+    font-weight: 700;
+    padding: 0.1in 0.16in;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.18in;
+    margin-top: 0.14in;
+  }
+  .card {
+    background: #eef4ea;
+    border: 1px solid #8eaa78;
+    padding: 0.12in 0.16in 0.14in;
+  }
+  .card h2 { font-size: 16pt; margin: 0 0 0.04in; color: #24501f; }
+  .card p { font-size: 14pt; line-height: 1.3; margin: 0; }
+</style>
+</head>
+<body>
+
+<section class="slide">
+  <p class="kicker">Hailey · last cloud tasks</p>
+  <h1>I set up the CI/CD pipeline.</h1>
+  <p class="say">Every time we push code to GitHub, it builds and checks the app on its own.</p>
+  <ol class="steps">
+    <li><span class="num">1.</span> Run the Python tests</li>
+    <li><span class="num">2.</span> Build the Docker image and run the container</li>
+    <li><span class="num">3.</span> Start Azurite and run the function</li>
+  </ol>
+  <p class="foot">GitHub Actions workflow: .github/workflows/deploy.yml</p>
+</section>
+
+<section class="slide">
+  <p class="kicker">GitHub Actions</p>
+  <h1>The run succeeded.</h1>
+  <img class="shot" src="crops/09_task4_actions_summary.png" alt="Successful GitHub Actions run">
+  <p class="foot">Job: Build, test, push, and deploy. October 6, 2026, 7:09 PM to 7:11 PM UTC.</p>
+</section>
+
+<section class="slide">
+  <p class="kicker">Tests</p>
+  <h1>Five Python tests passed.</h1>
+  <img class="shot" src="crops/10_task4_actions_tests.png" alt="Pytest result in the Actions log">
+  <p class="result">5 passed in 2.49 seconds. The diet calculations were still correct.</p>
+  <p class="foot">This step runs before the image is deployed.</p>
+</section>
+
+<section class="slide">
+  <p class="kicker">Docker</p>
+  <h1>The container finished.</h1>
+  <img class="shot" src="crops/11_task4_actions_deploy.png" alt="Container deployment log">
+  <p class="foot">The image was pushed to a local registry, then the container ran. Keto: about 101 grams of protein.</p>
+</section>
+
+<section class="slide">
+  <p class="kicker">Azurite and two improvements</p>
+  <h1>The function saved the averages.</h1>
+  <img class="shot" src="crops/12_task4_actions_serverless.png" alt="Azurite upload and function result">
+  <div class="cards">
+    <div class="card">
+      <h2>Multi-stage build</h2>
+      <p>The final Docker image only keeps what it needs to run.</p>
+    </div>
+    <div class="card">
+      <h2>Four columns only</h2>
+      <p>The function reads just the columns it uses, so it takes less memory.</p>
+    </div>
+  </div>
+  <p class="foot">Azurite stands in for Azure Blob Storage. The function printed “Data processed and stored successfully.”</p>
+</section>
+
+</body>
+</html>

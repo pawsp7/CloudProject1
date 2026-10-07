@@ -1,0 +1,18 @@
+Hailey — voiceover
+Last cloud work: the CI/CD pipeline, plus two small improvements
+About one minute. Read one block, then go to the next slide.
+
+SLIDE 1
+Hi, I’m Hailey. I set up the CI/CD pipeline. Every time we push code to GitHub, it builds and checks the app on its own.
+
+SLIDE 2
+I used GitHub Actions. This screen is the successful run. The job is called Build, test, push, and deploy. It started at 7:09 PM UTC on October 6 and finished in about two minutes.
+
+SLIDE 3
+The first step is the tests. Five Python tests passed. That means the diet calculations were still correct before anything was deployed.
+
+SLIDE 4
+Next, the pipeline builds the Docker image and runs the container. The image is the packaged app. The container is that app actually running. Keto had the highest average protein, about 101 grams.
+
+SLIDE 5
+Then it starts Azurite, which stands in for Azure Blob Storage. The function uploads the CSV and saves the averages. I also made two improvements: a multi-stage build, so the Docker image only keeps what it needs, and the function only reads the four columns it uses.
