@@ -27,6 +27,13 @@ def test_average_macros_groups_by_diet():
     assert avg.loc["vegan", "Fat(g)"] == 2.0
 
 
+def test_narrow_column_read_matches_full_means():
+    """The serverless path reads only Diet_type and the three macros."""
+    full = pd.read_csv(ROOT / "All_Diets.csv")
+    narrow = pd.read_csv(ROOT / "All_Diets.csv", usecols=["Diet_type", *MACROS])
+    assert average_macros(full).round(6).equals(average_macros(narrow).round(6))
+
+
 def test_saved_nosql_results_cover_every_diet():
     results_path = ROOT / OUTPUT_FILE
     records = json.loads(results_path.read_text())

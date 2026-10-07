@@ -38,9 +38,14 @@ def process_nutritional_data_from_azurite():
     container_client = blob_service_client.get_container_client(CONTAINER_NAME)
     blob_client = container_client.get_blob_client(BLOB_NAME)
 
-    # Download blob content into memory and load as DataFrame
+    # Download blob content into memory and load as DataFrame.
+    # Only the columns used by the aggregation are parsed. Recipe name,
+    # cuisine, and extraction timestamps are not needed for the diet means.
     stream = blob_client.download_blob().readall()
-    df = pd.read_csv(io.BytesIO(stream))
+    df = pd.read_csv(
+        io.BytesIO(stream),
+        usecols=["Diet_type", *MACROS],
+    )
 
     # Group by diet type and compute mean of the three macro columns
     avg_macros = average_macros(df)
